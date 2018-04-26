@@ -13,8 +13,15 @@ public class Game {
         this.view = new GameView(board);
     }
 
-    boolean isWin() {
-       return false;
+    boolean isWin(int row, int col) {
+
+        boolean diagonalCheck = false;
+
+        int maxIndex = board.size-1;
+        if (row==col || row == maxIndex-col) {
+            diagonalCheck = checkDecreasingDiagonal() || checkIncreasingDiagonal();
+        }
+       return checkRow(row) || checkCollumn(col) || diagonalCheck;
     }
 
     boolean checkRow(int row) {
