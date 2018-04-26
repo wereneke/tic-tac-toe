@@ -22,7 +22,6 @@ public class Board {
     }
 
     public boolean isGamePossible() {
-        System.out.println("lack of space");
         return capacity>0;
     }
 }

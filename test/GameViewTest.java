@@ -36,15 +36,4 @@ class GameViewTest {
         view.displayBoard();
     }
 
-    @Test
-    void testIfCheckingOfWinsWorksWhenIsWin() {
-        assertFalse(game.checkRow(2));
-    }
-
-    @Test
-    void testIfDiagonalCheckingWorks() {
-        assertTrue(game.checkDecreasingDiagonal());
-        assertTrue(game.checkIncreasingDiagonal());
-    }
-
 }

@@ -23,7 +23,7 @@ public class Game {
         players.put(1, player1);
     }
 
-    public void turn(Player player) {
+    private void turn(Player player) {
 
         int row = 0, col = 0;
         boolean turned = false;
@@ -41,6 +41,8 @@ public class Game {
             isWin = true;
             System.out.println(String.format("Winner is %s", player.name));
         }
+
+        view.displayBoard();
     }
 
     public void play() {
