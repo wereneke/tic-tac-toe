@@ -1,72 +1,61 @@
+import java.util.HashMap;
+import java.util.Scanner;
+
 public class Game {
 
-    Player player1;
-    Player player2;
+    HashMap<Integer, Player> players;
+
     Board board;
+    WinChecker winChecker;
     GameView view;
 
-    public Game(Player player1, Player player2, Board board) {
+    Scanner scan = new Scanner(System.in);
+    boolean isWin = false;
 
-        this.player1 = player1;
-        this.player2 = player2;
+    public Game(Player player0, Player player1, Board board) {
+
         this.board = board;
+        this.winChecker = new WinChecker(board.board);
         this.view = new GameView(board);
+
+        this.players = new HashMap<>();
+        players.put(0, player0);
+        players.put(1, player1);
     }
 
-    boolean isWin(int row, int col) {
+    public void turn(Player player) {
 
-        boolean diagonalCheck = false;
+        int row = 0, col = 0;
+        boolean turned = false;
 
-        int maxIndex = board.size-1;
-        if (row==col || row == maxIndex-col) {
-            diagonalCheck = checkDecreasingDiagonal() || checkIncreasingDiagonal();
+        System.out.println(String.format("%s's turn", player.name));
+
+        while (!turned) {
+            System.out.println("enter row index");
+            row = scan.nextInt();
+            System.out.println("enter collumn index");
+            col = scan.nextInt();
+            turned = board.putSign(row, col, player.sign);
         }
-       return checkRow(row) || checkCollumn(col) || diagonalCheck;
-    }
-
-    boolean checkRow(int row) {
-        char sample = board.board[row][0];
-        if (isSampleNull(sample)) return false;
-
-        for (char a: board.board[row]) {
-            if (a!=sample) return false;
+        if (winChecker.isWin(row, col)) {
+            isWin = true;
+            System.out.println(String.format("Winner is %s", player.name));
         }
-        return true;
     }
 
-    boolean checkCollumn(int col) {
-        char sample = board.board[0][col];
-        if (isSampleNull(sample)) return false;
+    public void play() {
+        int turnCounter = 0;
+        Player actualPlayer;
 
-        for (int i=0; i<board.size; i++) {
-            if (board.board[i][col]!=sample) return false;
+        while (board.isGamePossible() && !isWin) {
+            actualPlayer = playerChanger(turnCounter);
+            turn(actualPlayer);
+            turnCounter++;
         }
-        return true;
     }
 
-    boolean checkDecreasingDiagonal() {
-        char sample = board.board[0][0];
-        if (isSampleNull(sample)) return false;
-
-        for (int i=0; i<board.size; i++) {
-            if (board.board[i][i] != sample) return false;
-        }
-        return true;
-    }
-
-    boolean checkIncreasingDiagonal() {
-        int lastIndexOnBoard = board.size-1;
-        char sample = board.board[lastIndexOnBoard][0];
-        if (isSampleNull(sample)) return false;
-
-        for (int i = 0; i<=lastIndexOnBoard; i++) {
-            if (board.board[lastIndexOnBoard-i][i] != sample) return false;
-        }
-        return true;
-    }
-
-    private boolean isSampleNull(char sample) {
-        return sample == '\u0000';
+    private Player playerChanger(int i) {
+        return players.get(i%2);
     }
 }
 
