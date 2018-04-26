@@ -12,5 +12,29 @@ public class Game {
         this.board = board;
         this.view = new GameView(board);
     }
+
+    boolean isWin() {
+       return false;
+    }
+
+    boolean checkRow(int row) {
+        char sample = board.board[row][0];
+        if (sample == '\u0000') return false;
+
+        for (char a: board.board[row]) {
+            if (a!=sample) return false;
+        }
+        return true;
+    }
+
+    boolean checkCollumn(int col) {
+        char sample = board.board[0][col];
+        if (sample == '\u0000') return false;
+
+        for (int i=0; i<board.size; i++) {
+            if (board.board[i][col]!=sample) return false;
+        }
+        return true;
+    }
 }
 

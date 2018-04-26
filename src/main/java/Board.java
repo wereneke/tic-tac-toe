@@ -7,4 +7,5 @@ public class Board {
         this.size = size;
         this.board = new char[size][size];
     }
+
 }
