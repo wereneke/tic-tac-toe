@@ -1,7 +1,9 @@
+import logic.Game;
+import model.Board;
+import model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
+import view.GameView;
 
 class GameViewTest {
 

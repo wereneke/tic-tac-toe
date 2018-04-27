@@ -1,5 +1,10 @@
+package logic;
+
+import model.Board;
+import model.Player;
+
 import java.util.HashMap;
-import java.util.Scanner;
+import java.util.InputMismatchException;
 
 public class Game {
 
@@ -9,16 +14,15 @@ public class Game {
     WinChecker winChecker;
     GameView view;
 
-    Scanner scan = new Scanner(System.in);
     boolean isWin = false;
 
-    public Game(Player player0, Player player1, Board board) {
+    public Game(Player player0, Player player1, Board board, GameView view) {
 
         this.board = board;
         this.winChecker = new WinChecker(board.board);
-        this.view = new GameView(board);
+        this.view = view;
 
-        this.players = new HashMap<>();
+        this.players = new HashMap();
         players.put(0, player0);
         players.put(1, player1);
     }
@@ -27,15 +31,19 @@ public class Game {
 
         int row = 0, col = 0;
         boolean turned = false;
-
+        int[] coordinates;
         System.out.println(String.format("%s's turn", player.name));
 
         while (!turned) {
-            System.out.println("enter row index");
-            row = scan.nextInt();
-            System.out.println("enter collumn index");
-            col = scan.nextInt();
-            turned = board.putSign(row, col, player.sign);
+            try {
+                coordinates = view.coordinates();
+                turned = board.putSign(coordinates[0], coordinates[1], player.sign);
+
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            } catch (InputMismatchException e) {
+                System.out.println("enter number!");
+            }
         }
         if (winChecker.isWin(row, col)) {
             isWin = true;

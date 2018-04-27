@@ -1,8 +1,10 @@
+package model;
+
 public class Board {
 
-    int size;
-    int capacity;
-    char[][] board;
+    private int size;
+    private int capacity;
+    private char[][] board;
 
     public Board(int size) {
         this.size = size;
@@ -23,5 +25,13 @@ public class Board {
 
     public boolean isGamePossible() {
         return capacity>0;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public char[][] getBoard() {
+        return board;
     }
 }
