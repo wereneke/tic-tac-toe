@@ -11,7 +11,7 @@ public class GameView {
     private int size;
     private Scanner scanner = new Scanner(System.in);
 
-    GameView(Board board) {
+    public GameView(Board board) {
         this.board = board.getBoard();
         this.size = board.getSize();
     }

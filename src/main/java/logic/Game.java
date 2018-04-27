@@ -2,24 +2,25 @@ package logic;
 
 import model.Board;
 import model.Player;
+import view.GameView;
 
 import java.util.HashMap;
 import java.util.InputMismatchException;
 
 public class Game {
 
-    HashMap<Integer, Player> players;
+    private HashMap<Integer, Player> players;
 
-    Board board;
-    WinChecker winChecker;
-    GameView view;
+    private Board board;
+    private WinChecker winChecker;
+    private GameView view;
 
-    boolean isWin = false;
+    private boolean isWin = false;
 
     public Game(Player player0, Player player1, Board board, GameView view) {
 
         this.board = board;
-        this.winChecker = new WinChecker(board.board);
+        this.winChecker = new WinChecker(board.getBoard());
         this.view = view;
 
         this.players = new HashMap();
@@ -32,12 +33,12 @@ public class Game {
         int row = 0, col = 0;
         boolean turned = false;
         int[] coordinates;
-        System.out.println(String.format("%s's turn", player.name));
+        System.out.println(String.format("%s's turn", player.getName()));
 
         while (!turned) {
             try {
                 coordinates = view.coordinates();
-                turned = board.putSign(coordinates[0], coordinates[1], player.sign);
+                turned = board.putSign(coordinates[0], coordinates[1], player.getSign());
 
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
@@ -47,7 +48,7 @@ public class Game {
         }
         if (winChecker.isWin(row, col)) {
             isWin = true;
-            System.out.println(String.format("Winner is %s", player.name));
+            System.out.println(String.format("Winner is %s", player.getName()));
         }
 
         view.displayBoard();
