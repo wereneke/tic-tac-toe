@@ -23,7 +23,7 @@ public class Game {
         this.winChecker = new WinChecker(board.getBoard());
         this.view = view;
 
-        this.players = new HashMap();
+        this.players = new HashMap<>();
         players.put(0, player0);
         players.put(1, player1);
     }

@@ -6,19 +6,18 @@ import view.GameView;
 
 public class Main {
 
-    private Creator creator;
-    private Player player0;
-    private Player player1;
-    private Board board;
     private Game game;
-    private GameView view;
 
     public Main() {
 
-        creator = new Creator();
-        board = creator.createBoard();
-        view = new GameView(board);
-        game = new Game(player0, player1, board, view);
+        Creator creator = new Creator();
+
+        Board board = creator.createBoard();
+        GameView view = new GameView(board);
+
+        Player[] players = creator.createPlayers();
+
+        game = new Game(players[0], players[1], board, view);
     }
 
     public static void main(String[] args) {

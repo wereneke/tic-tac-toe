@@ -31,11 +31,11 @@ public class GameView {
         int[] coordinates = new int[2];
 
         System.out.println("enter row index");
-        int row = scanner.nextInt();
+        int row = Integer.valueOf(scanner.nextLine());
         if (row < 0 || size <= row) throw new IllegalArgumentException(String.format("coordinate must be contained [0, %d]", size-1));
 
         System.out.println("enter column index");
-        int col = scanner.nextInt();
+        int col = Integer.valueOf(scanner.nextLine());
         if (col < 0 || size <= col) throw new IllegalArgumentException(String.format("coordinate must be contained [0, %d]", size-1));
 
         coordinates[0] = row;
