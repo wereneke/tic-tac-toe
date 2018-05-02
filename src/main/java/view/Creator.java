@@ -1,12 +1,10 @@
 package view;
 
 import model.Board;
+import model.NPC;
 import model.Player;
 
-import java.util.InputMismatchException;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 public class Creator {
 
@@ -18,6 +16,7 @@ public class Creator {
         System.out.println("what size board should be?");
         size = Integer.valueOf(in.nextLine());
         if (size < 3) throw new IllegalArgumentException("size must be greater or equal 3");
+
         return size;
     }
 
@@ -28,8 +27,10 @@ public class Creator {
 
         do {
             try {
+
                 size = boardSize();
                 board = new Board(size);
+
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             } catch (InputMismatchException e) {
@@ -47,7 +48,17 @@ public class Creator {
 
         Player player0 = createPlayer(null);
         usedSign = player0.getSign();
-        Player player1 = createPlayer(usedSign);
+
+        Player player1;
+        if (isSinglePlayer()) {
+            player1 = createComputerPlayer(usedSign);
+            System.out.println("Your competitor is " + player1.getName());
+            ((NPC) player1).setLevel(setLevel());
+
+        } else {
+            System.out.println("===============\nanother player:");
+            player1 = createPlayer(usedSign);
+        }
 
         players[0] = player0;
         players[1] = player1;
@@ -60,6 +71,7 @@ public class Creator {
         System.out.println("Whats your name?");
         String name = in.nextLine();
         if (name.equals("")) throw new IllegalArgumentException("you must provide a name");
+
         return name;
     }
 
@@ -104,5 +116,50 @@ public class Creator {
         }
 
         return new Player(name, sign);
+    }
+
+    private NPC createComputerPlayer(Character usedSign) {
+
+        Character sign = getRandomSign();
+        while (sign.equals(usedSign)) sign = getRandomSign();
+        String name = "Trombert";
+
+        return new NPC(name, sign);
+    }
+
+    private Character getRandomSign() {
+
+        Random r = new Random();
+        Character sign = (char) (r.nextInt() + 'a');
+
+        return sign;
+    }
+
+    private boolean isSinglePlayer() {
+        System.out.println("Do you want to play with computer? (y/n)");
+        String answer = in.nextLine();
+
+        return answer.toLowerCase().startsWith("y");
+    }
+
+    private int setLevel() {
+
+        Integer level = null;
+        int temp;
+        System.out.println("how hard should he treat you? (0-1-2)");
+        do {
+            try {
+                temp = Integer.valueOf(in.nextLine());
+                if (temp<0 || temp>2) throw new IllegalArgumentException();
+                level = temp;
+
+            } catch (NumberFormatException e) {
+                System.out.println("provide number");
+            } catch (IllegalArgumentException e) {
+                System.out.println("provide 0 or 1 or 2");
+            }
+        } while (Objects.isNull(level));
+
+        return level;
     }
 }

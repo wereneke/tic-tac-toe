@@ -24,6 +24,7 @@ public class GameView {
             }
             System.out.print("\n");
         }
+        System.out.println("\n");
     }
 
     public int[] coordinates() throws IllegalArgumentException, InputMismatchException {

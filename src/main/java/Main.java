@@ -17,7 +17,7 @@ public class Main {
 
         Player[] players = creator.createPlayers();
 
-        game = new Game(players[0], players[1], board, view);
+        game = new Game(players, board, view);
     }
 
     public static void main(String[] args) {

@@ -1,15 +1,15 @@
 package logic;
 
 import model.Board;
+import model.NPC;
 import model.Player;
 import view.GameView;
 
-import java.util.HashMap;
 import java.util.InputMismatchException;
 
 public class Game {
 
-    private HashMap<Integer, Player> players;
+    private Player[] players;
 
     private Board board;
     private WinChecker winChecker;
@@ -17,15 +17,15 @@ public class Game {
 
     private boolean isWin = false;
 
-    public Game(Player player0, Player player1, Board board, GameView view) {
+    public Game(Player[] players, Board board, GameView view) {
 
         this.board = board;
         this.winChecker = new WinChecker(board.getBoard());
         this.view = view;
 
-        this.players = new HashMap<>();
-        players.put(0, player0);
-        players.put(1, player1);
+        this.players = players;
+
+        if (players[1] instanceof NPC) ((NPC)players[1]).setBoard(board.getBoard());
     }
 
     private void turn(Player player) {
@@ -37,7 +37,13 @@ public class Game {
 
         while (!turned) {
             try {
-                coordinates = view.coordinates();
+
+                if (player instanceof NPC) {
+                    coordinates = ((NPC) player).coordinates();
+                } else {
+                    coordinates = view.coordinates();
+                }
+
                 turned = board.putSign(coordinates[0], coordinates[1], player.getSign());
 
             } catch (IllegalArgumentException e) {
@@ -46,15 +52,19 @@ public class Game {
                 System.out.println("enter number!");
             }
         }
+
+        view.displayBoard();
+
         if (winChecker.isWin(row, col)) {
             isWin = true;
             System.out.println(String.format("Winner is %s", player.getName()));
         }
 
-        view.displayBoard();
+
     }
 
     public void play() {
+
         int turnCounter = 0;
         Player actualPlayer;
 
@@ -63,10 +73,11 @@ public class Game {
             turn(actualPlayer);
             turnCounter++;
         }
+        if (!isWin) System.out.println("there is no winner");
     }
 
     private Player playerChanger(int i) {
-        return players.get(i%2);
+        return players[i%2];
     }
 }
 
