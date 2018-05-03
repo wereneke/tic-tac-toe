@@ -1,14 +1,15 @@
 package model;
 
-import logic.AI;
+import logic.ai.AI;
+import logic.ai.AIFactory;
 
 public class NPC extends Player {
 
+    private AIFactory factory = new AIFactory();
     private AI ai;
 
     public NPC(String name, char sign) {
         super(name, sign);
-        this.ai = new AI();
     }
 
     public int[] coordinates() {
@@ -16,7 +17,7 @@ public class NPC extends Player {
     }
 
     public void setLevel(int i) {
-        ai.setLevel(i);
+        ai = factory.create(i);
     }
 
     public void setBoard(char[][] board) {

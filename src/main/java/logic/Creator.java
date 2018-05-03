@@ -48,20 +48,7 @@ public class Creator {
         if (view.isSinglePlayer()) {
             player1 = createComputerPlayer(usedSign);
             System.out.println("Your competitor is " + player1.getName());
-
-            Integer level = null;
-            do {
-                try {
-                    level = view.getLevel();
-                    ((NPC) player1).setLevel(level);
-
-                } catch (NumberFormatException e) {
-                    System.out.println("provide number (0-1-2)");
-                } catch (IllegalArgumentException e) {
-                    System.out.println(e.getMessage());
-                }
-            } while (Objects.isNull(level));
-
+            setLevel(((NPC)player1));
 
         } else {
             System.out.println("===============\nanother player:");
@@ -101,7 +88,7 @@ public class Creator {
     private NPC createComputerPlayer(Character usedSign) {
 
         Character sign = getRandomSign();
-        while (sign.equals(usedSign)) sign = getRandomSign();
+        while (sign.equals(usedSign) || sign.equals('\u0000')) sign = getRandomSign();
         String name = "Trombert";
 
         return new NPC(name, sign);
@@ -113,5 +100,20 @@ public class Creator {
         Character sign = (char) (r.nextInt() + 'a');
 
         return sign;
+    }
+
+    private void setLevel(NPC player) {
+        Integer level = null;
+        do {
+            try {
+                level = view.getLevel();
+                player.setLevel(level);
+
+            } catch (NumberFormatException e) {
+                System.out.println("provide number (0-1-2)");
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        } while (Objects.isNull(level));
     }
 }
