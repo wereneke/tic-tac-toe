@@ -1,7 +1,7 @@
 import logic.Game;
 import model.Board;
 import model.Player;
-import view.Creator;
+import logic.Creator;
 import view.GameView;
 
 public class Main {

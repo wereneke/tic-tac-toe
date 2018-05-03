@@ -38,9 +38,9 @@ public class Game {
 
         do {
             if (player instanceof NPC) {
-//                    int[] coordinates = ((NPC) player).coordinates();
-//                row = coordinates[0];
-//                col = coordinates[1];
+                int[] coordinates = ((NPC) player).coordinates();
+                row = coordinates[0];
+                col = coordinates[1];
             } else {
                 row = getIndex("row");
                 col = getIndex("column");

@@ -68,7 +68,6 @@ public class GameView {
         return sign;
     }
 
-
     public boolean isSinglePlayer() {
         System.out.println("Do you want to play with computer? (y/n)");
         String answer = in.nextLine();

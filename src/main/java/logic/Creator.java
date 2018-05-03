@@ -1,8 +1,9 @@
-package view;
+package logic;
 
 import model.Board;
 import model.NPC;
 import model.Player;
+import view.GameView;
 
 import java.util.*;
 
@@ -78,21 +79,21 @@ public class Creator {
         String name = null;
         Character sign = null;
 
-        while (Objects.isNull(name)) {
+         do {
             try {
                 name = view.getName();
             }catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
-        }
+        } while (Objects.isNull(name));
 
-        while (Objects.isNull(sign)) {
+        do {
             try {
                 sign = view.getSign(usedSign);
             }catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
-        }
+        } while (Objects.isNull(sign));
 
         return new Player(name, sign);
     }
