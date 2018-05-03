@@ -31,21 +31,24 @@ public class Game {
 
     private void turn(Player player) {
 
-        Integer row =null, col =null;
+        Integer row=null, col=null;
+        boolean turned = false;
 
         System.out.println(String.format("%s's turn", player.getName()));
 
-        if (player instanceof NPC) {
+        do {
+            if (player instanceof NPC) {
 //                    int[] coordinates = ((NPC) player).coordinates();
 //                row = coordinates[0];
 //                col = coordinates[1];
-        } else {
-           row = getIndex("row");
-           col = getIndex("column");
-        }
+            } else {
+                row = getIndex("row");
+                col = getIndex("column");
+            }
 
-        board.putSign(row, col, player.getSign());
-        view.displayBoard();
+            turned = board.putSign(row, col, player.getSign());
+            view.displayBoard();
+        } while (!turned);
 
         if (winChecker.isWin(row, col)) {
             isWin = true;
