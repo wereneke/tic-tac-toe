@@ -21,22 +21,13 @@ public class GameView {
         System.out.println("\n");
     }
 
-    public int[] coordinates() throws IllegalArgumentException, InputMismatchException {
+    public int coordinate(String rowOrCol) throws IllegalArgumentException, InputMismatchException {
 
-        int[] coordinates = new int[2];
+        System.out.println(String.format("enter %s index", rowOrCol));
+        int coordinate = Integer.valueOf(in.nextLine());
+        if (coordinate < 0 || size <= coordinate) throw new IllegalArgumentException(String.format("coordinate must be contained [0, %d]", size-1));
 
-        System.out.println("enter row index");
-        int row = Integer.valueOf(in.nextLine());
-        if (row < 0 || size <= row) throw new IllegalArgumentException(String.format("coordinate must be contained [0, %d]", size-1));
-
-        System.out.println("enter column index");
-        int col = Integer.valueOf(in.nextLine());
-        if (col < 0 || size <= col) throw new IllegalArgumentException(String.format("coordinate must be contained [0, %d]", size-1));
-
-        coordinates[0] = row;
-        coordinates[1] = col;
-
-        return coordinates;
+        return coordinate;
     }
 
     public int boardSize() throws IllegalArgumentException, InputMismatchException {

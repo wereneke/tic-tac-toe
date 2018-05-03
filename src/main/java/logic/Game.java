@@ -6,6 +6,7 @@ import model.Player;
 import view.GameView;
 
 import java.util.InputMismatchException;
+import java.util.Objects;
 
 public class Game {
 
@@ -30,31 +31,23 @@ public class Game {
 
     private void turn(Player player) {
 
-        boolean turned = false;
-        int[] coordinates = {0, 0};
+        Integer row =null, col =null;
+
         System.out.println(String.format("%s's turn", player.getName()));
 
-        while (!turned) {
-            try {
-
-                if (player instanceof NPC) {
-                    coordinates = ((NPC) player).coordinates();
-                } else {
-                    coordinates = view.coordinates();
-                }
-
-                turned = board.putSign(coordinates[0], coordinates[1], player.getSign());
-
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            } catch (InputMismatchException e) {
-                System.out.println("enter number!");
-            }
+        if (player instanceof NPC) {
+//                    int[] coordinates = ((NPC) player).coordinates();
+//                row = coordinates[0];
+//                col = coordinates[1];
+        } else {
+           row = getIndex("row");
+           col = getIndex("column");
         }
 
+        board.putSign(row, col, player.getSign());
         view.displayBoard();
 
-        if (winChecker.isWin(coordinates[0], coordinates[1])) {
+        if (winChecker.isWin(row, col)) {
             isWin = true;
             System.out.println(String.format("Winner is %s", player.getName()));
         }
@@ -75,6 +68,23 @@ public class Game {
 
     private Player playerChanger(int i) {
         return players[i%2];
+    }
+
+    private int getIndex(String of) {
+
+        Integer index = null;
+        do {
+            try {
+                index = view.coordinate(of);
+
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            } catch (InputMismatchException e) {
+                System.out.println("enter number!");
+            }
+        } while (Objects.isNull(index));
+
+        return index;
     }
 }
 
