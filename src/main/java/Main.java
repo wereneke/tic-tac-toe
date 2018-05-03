@@ -10,12 +10,14 @@ public class Main {
 
     public Main() {
 
-        Creator creator = new Creator();
+        GameView view = new GameView();
+        Creator creator = new Creator(view);
 
         Board board = creator.createBoard();
-        GameView view = new GameView(board);
-
         Player[] players = creator.createPlayers();
+
+        view.setBoard(board.getBoard());
+        view.setSize(board.getSize());
 
         game = new Game(players, board, view);
     }

@@ -8,16 +8,10 @@ import java.util.*;
 
 public class Creator {
 
-    private Scanner in = new Scanner(System.in);
+    private GameView view;
 
-    private int boardSize() throws IllegalArgumentException, InputMismatchException {
-
-        int size;
-        System.out.println("what size board should be?");
-        size = Integer.valueOf(in.nextLine());
-        if (size < 3) throw new IllegalArgumentException("size must be greater or equal 3");
-
-        return size;
+    public Creator(GameView view) {
+        this.view = view;
     }
 
     public Board createBoard() {
@@ -27,8 +21,7 @@ public class Creator {
 
         do {
             try {
-
-                size = boardSize();
+                size = view.boardSize();
                 board = new Board(size);
 
             } catch (IllegalArgumentException e) {
@@ -50,10 +43,24 @@ public class Creator {
         usedSign = player0.getSign();
 
         Player player1;
-        if (isSinglePlayer()) {
+
+        if (view.isSinglePlayer()) {
             player1 = createComputerPlayer(usedSign);
             System.out.println("Your competitor is " + player1.getName());
-            ((NPC) player1).setLevel(setLevel());
+
+            Integer level = null;
+            do {
+                try {
+                    level = view.getLevel();
+                    ((NPC) player1).setLevel(level);
+
+                } catch (NumberFormatException e) {
+                    System.out.println("provide number (0-1-2)");
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            } while (Objects.isNull(level));
+
 
         } else {
             System.out.println("===============\nanother player:");
@@ -66,34 +73,6 @@ public class Creator {
         return players;
     }
 
-    private String getName() throws IllegalArgumentException {
-
-        System.out.println("Whats your name?");
-        String name = in.nextLine();
-        if (name.equals("")) throw new IllegalArgumentException("you must provide a name");
-
-        return name;
-    }
-
-    private char getSign(Character used) throws IllegalArgumentException {
-
-        Optional<Character> unalowed = Optional.ofNullable(used);
-
-        System.out.println("Provide your sign");
-        String answer = in.nextLine();
-
-        if (answer.length()!=1) throw new IllegalArgumentException("sign must have length of 1");
-
-        char sign = answer.charAt(0);
-        if (sign == '\u0000') throw new IllegalArgumentException("you must provide sign");
-
-        unalowed.ifPresent(u -> {
-            if (u.equals(sign)) throw new IllegalArgumentException("the sign is reserved");
-        });
-
-        return sign;
-    }
-
     private Player createPlayer(Character usedSign) {
 
         String name = null;
@@ -101,7 +80,7 @@ public class Creator {
 
         while (Objects.isNull(name)) {
             try {
-                name = getName();
+                name = view.getName();
             }catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
@@ -109,7 +88,7 @@ public class Creator {
 
         while (Objects.isNull(sign)) {
             try {
-                sign = getSign(usedSign);
+                sign = view.getSign(usedSign);
             }catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
@@ -133,33 +112,5 @@ public class Creator {
         Character sign = (char) (r.nextInt() + 'a');
 
         return sign;
-    }
-
-    private boolean isSinglePlayer() {
-        System.out.println("Do you want to play with computer? (y/n)");
-        String answer = in.nextLine();
-
-        return answer.toLowerCase().startsWith("y");
-    }
-
-    private int setLevel() {
-
-        Integer level = null;
-        int temp;
-        System.out.println("how hard should he treat you? (0-1-2)");
-        do {
-            try {
-                temp = Integer.valueOf(in.nextLine());
-                if (temp<0 || temp>2) throw new IllegalArgumentException();
-                level = temp;
-
-            } catch (NumberFormatException e) {
-                System.out.println("provide number");
-            } catch (IllegalArgumentException e) {
-                System.out.println("provide 0 or 1 or 2");
-            }
-        } while (Objects.isNull(level));
-
-        return level;
     }
 }
