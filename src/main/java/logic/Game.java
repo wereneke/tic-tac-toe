@@ -30,9 +30,8 @@ public class Game {
 
     private void turn(Player player) {
 
-        int row = 0, col = 0;
         boolean turned = false;
-        int[] coordinates;
+        int[] coordinates = {0, 0};
         System.out.println(String.format("%s's turn", player.getName()));
 
         while (!turned) {
@@ -55,12 +54,10 @@ public class Game {
 
         view.displayBoard();
 
-        if (winChecker.isWin(row, col)) {
+        if (winChecker.isWin(coordinates[0], coordinates[1])) {
             isWin = true;
             System.out.println(String.format("Winner is %s", player.getName()));
         }
-
-
     }
 
     public void play() {
