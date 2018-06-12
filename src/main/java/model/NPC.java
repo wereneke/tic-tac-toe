@@ -23,4 +23,8 @@ public class NPC extends Player {
     public void setBoard(char[][] board) {
         ai.setBoard(board);
     }
+
+    public AI getAi() {
+        return this.ai;
+    }
 }

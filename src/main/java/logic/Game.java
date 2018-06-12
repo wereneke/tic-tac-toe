@@ -1,5 +1,6 @@
 package logic;
 
+import logic.ai.ABitSmarterAI;
 import model.Board;
 import model.NPC;
 import model.Player;
@@ -26,7 +27,12 @@ public class Game {
 
         this.players = players;
 
-        if (players[1] instanceof NPC) ((NPC)players[1]).setBoard(board.getBoard());
+        if (players[1] instanceof NPC) {
+            ((NPC)players[1]).setBoard(board.getBoard());
+            ((NPC)players[1]).getAi().setFieldStripesOfBoard();
+            ((NPC)players[1]).getAi().setEnemySign(players[0].getSign());
+        }
+
     }
 
     private void turn(Player player) {
