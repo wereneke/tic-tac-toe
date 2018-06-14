@@ -5,26 +5,39 @@ import java.util.*;
 public class ABitSmarterAI extends NotVerySmartAI {
 
     @Override
-    public int[] coordinates() {
+    public int[] coordinates(){
 
         int rowIndx, colIndx;
 
-        Optional<char[]> maxPopulatedRow = maxPopulated(rowsOfBoard);
-        //Optional<char[]> maxPopulatedCol = maxPopulated(colsOfBoard);
+        Map<List, Optional> maxMapping = maxMapping(rowsOfBoard, colsOfBoard, diagOfBoard);
 
-        if (maxPopulatedRow.isPresent()) {
-            char[] maxRow = maxPopulatedRow.get();
-            rowIndx = rowsOfBoard.indexOf(maxRow);
-            colIndx = findSlot(maxRow);
-        } else {
-            rowIndx = random.nextInt(boardSize);
-            colIndx = findSlot(board[rowIndx]);
-        }
+        Optional<Map.Entry<List, Optional>> maxEntryOpt = maxMapping.entrySet().stream()
+                .reduce((e1, e2) ->
+                        enemySignsInStripe((char[])e1.getValue().get()) > enemySignsInStripe((char[])e2.getValue().get())
+                ? e1 : e2);
 
-        return new int[]{rowIndx, colIndx};
+        Map.Entry<List, Optional> maxEntry = maxEntryOpt.get();
+
+        int[] coordinates = Strategy.coordinates();
+
+
+        return coordinates;
     }
 
-    Optional<char[]> maxPopulated(List<char[]> stripes) {
+    private Map<List, Optional> maxMapping(List ... stripeListed) {
+
+
+        Map<List, Optional> maxs = new HashMap<>();
+
+        for (List stripes: stripeListed) {
+            maxs.put(stripes, maxPopulated(stripes));
+        }
+
+        return maxs;
+    }
+
+
+    private Optional<char[]> maxPopulated(List<char[]> stripes) {
 
         return stripes.stream()
                 .filter(stripe -> hasStripeSlot(stripe))
@@ -53,6 +66,13 @@ public class ABitSmarterAI extends NotVerySmartAI {
             if (stripe[i]=='\u0000') return i;
         }
         return -1;
+    }
+
+    private static class Strategy {
+
+        static int[] coordinates() {
+            return new int[2];
+        }
     }
 
 }
