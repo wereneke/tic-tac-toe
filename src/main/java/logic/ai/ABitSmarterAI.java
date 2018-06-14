@@ -10,18 +10,15 @@ public class ABitSmarterAI extends NotVerySmartAI {
         int rowIndx, colIndx;
 
         Optional<char[]> maxPopulatedRow = maxPopulated(rowsOfBoard);
-        Optional<char[]> maxPopulatedCol = maxPopulated(colsOfBoard);
+        //Optional<char[]> maxPopulatedCol = maxPopulated(colsOfBoard);
 
         if (maxPopulatedRow.isPresent()) {
-            rowIndx = rowsOfBoard.indexOf(maxPopulatedRow.get());
+            char[] maxRow = maxPopulatedRow.get();
+            rowIndx = rowsOfBoard.indexOf(maxRow);
+            colIndx = findSlot(maxRow);
         } else {
             rowIndx = random.nextInt(boardSize);
-        }
-
-        if (maxPopulatedCol.isPresent()) {
-            colIndx = colsOfBoard.indexOf(maxPopulatedCol.get());
-        } else {
-            colIndx = random.nextInt(boardSize);
+            colIndx = findSlot(board[rowIndx]);
         }
 
         return new int[]{rowIndx, colIndx};
@@ -48,6 +45,14 @@ public class ABitSmarterAI extends NotVerySmartAI {
             if (stripe[i]=='\u0000') return true;
         }
         return false;
+    }
+
+    private int findSlot(char[] stripe) {
+
+        for (int i=0; i<boardSize; i++) {
+            if (stripe[i]=='\u0000') return i;
+        }
+        return -1;
     }
 
 }
