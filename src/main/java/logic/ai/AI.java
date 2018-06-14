@@ -9,11 +9,11 @@ public abstract class AI {
     int boardSize;
     char enemySign;
 
-    List<char[]> rowsOfBoard = new ArrayList<>();
-    List<char[]> colsOfBoard = new ArrayList<>();
-    List<char[]> diagOfBoard = new ArrayList<>();
+    List<char[]> rowsOfBoard = new ArrayList<>(boardSize);
+    List<char[]> colsOfBoard = new ArrayList<>(boardSize);
+    List<char[]> diagOfBoard = new ArrayList<>(2);
 
-    List<char[]> stripesOfBoard = new ArrayList<>(boardSize*boardSize+2);
+    List<char[]> stripesOfBoard = new ArrayList<>(2*boardSize+2);
 
     public abstract int[] coordinates();
 

@@ -1,6 +1,5 @@
 package logic;
 
-import logic.ai.ABitSmarterAI;
 import model.Board;
 import model.NPC;
 import model.Player;
@@ -37,8 +36,8 @@ public class Game {
 
     private void turn(Player player) {
 
-        Integer row=null, col=null;
-        boolean turned = false;
+        Integer row, col;
+        boolean turned;
 
         System.out.println(String.format("%s's turn", player.getName()));
 
