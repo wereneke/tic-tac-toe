@@ -4,10 +4,10 @@ import java.util.*;
 
 public class ABitSmarterAI extends NotVerySmartAI {
 
+    private CoordinatesFactory coordinatesFactory = new CoordinatesFactory();
+
     @Override
     public int[] coordinates(){
-
-        int rowIndx, colIndx;
 
         Map<List, Optional> maxMapping = maxMapping(rowsOfBoard, colsOfBoard, diagOfBoard);
 
@@ -18,8 +18,7 @@ public class ABitSmarterAI extends NotVerySmartAI {
 
         Map.Entry<List, Optional> maxEntry = maxEntryOpt.get();
 
-        int[] coordinates = Strategy.coordinates();
-
+        int[] coordinates = coordinatesFactory.coordinates(maxEntry);
 
         return coordinates;
     }
@@ -35,7 +34,6 @@ public class ABitSmarterAI extends NotVerySmartAI {
 
         return maxs;
     }
-
 
     private Optional<char[]> maxPopulated(List<char[]> stripes) {
 
@@ -60,18 +58,43 @@ public class ABitSmarterAI extends NotVerySmartAI {
         return false;
     }
 
-    private int findSlot(char[] stripe) {
 
-        for (int i=0; i<boardSize; i++) {
-            if (stripe[i]=='\u0000') return i;
+    private class CoordinatesFactory {
+
+        int[] coordinates(Map.Entry<List, Optional> entry) {
+
+            List stripes = entry.getKey();
+            char[] stripe = (char[]) entry.getValue().get();
+            int row, col;
+
+            if (stripes == rowsOfBoard) {
+                row = stripes.indexOf(stripe);
+                col = findSlot(stripe);
+
+            } else if (stripes == colsOfBoard) {
+                row = findSlot(stripe);
+                col = stripes.indexOf(stripe);
+            } else {
+
+                switch (stripes.indexOf(stripe)) {
+                    case 0: col = findSlot(stripe);
+                            row = boardSize - 1 - col;
+                            break;
+                    case 1: row = col = findSlot(stripe);
+                            break;
+                    default: row = col = random.nextInt(boardSize);
+                }
+            }
+
+            return new int[]{row, col};
         }
-        return -1;
-    }
 
-    private static class Strategy {
+        private int findSlot(char[] stripe) {
 
-        static int[] coordinates() {
-            return new int[2];
+            for (int i=0; i<boardSize; i++) {
+                if (stripe[i]=='\u0000') return i;
+            }
+            return -1;
         }
     }
 
