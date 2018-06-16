@@ -26,7 +26,7 @@ public class Creator {
                 board = new Board(size);
 
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+                System.out.println("size must be integer >= 3");
             } catch (InputMismatchException e) {
                 System.out.println("size must be integer >= 3");
             }

@@ -33,12 +33,16 @@ class ABitSmarterAITest {
         }
 
         for (char[] row: board) System.out.println(row);
+        System.out.println();
     }
 
     @Test
     void testIfMostPopulatedWorks() {
 
-        char[] c = {'\123', '\345', '\u0000', '\u1234'};
-        System.out.println(Arrays.asList(c).indexOf('\u0000'));
+        for (char[] stripe: ai.rowsOfBoard) System.out.println(stripe);
+        System.out.println();
+        for (char[] stripe: ai.colsOfBoard) System.out.println(stripe);
+        System.out.println();
+        for (char[] stripe: ai.diagOfBoard) System.out.println(stripe);
     }
 }

@@ -9,9 +9,9 @@ public abstract class AI {
     int boardSize;
     char enemySign;
 
-    List<char[]> rowsOfBoard = new ArrayList<>(boardSize);
-    List<char[]> colsOfBoard = new ArrayList<>(boardSize);
-    List<char[]> diagOfBoard = new ArrayList<>(2);
+    volatile List<char[]> rowsOfBoard = new ArrayList<>(boardSize);
+    volatile List<char[]> colsOfBoard = new ArrayList<>(boardSize);
+    volatile List<char[]> diagOfBoard = new ArrayList<>(2);
 
     List<char[]> stripesOfBoard = new ArrayList<>(2*boardSize+2);
 
@@ -20,13 +20,14 @@ public abstract class AI {
     public void setBoard(char[][] board) {
         this.board = board;
         this.boardSize = board.length;
+        setFieldStripesOfBoard();
     }
 
     public void setEnemySign(char sign) {
         this.enemySign = sign;
     }
 
-    public void setFieldStripesOfBoard() {
+    private void setFieldStripesOfBoard() {
         setRowsOfBoard();
         setColsOfBoard();
         setDiagOfBoard();
