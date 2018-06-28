@@ -36,13 +36,4 @@ class ABitSmarterAITest {
         System.out.println();
     }
 
-    @Test
-    void testIfMostPopulatedWorks() {
-
-        for (char[] stripe: ai.rowsOfBoard) System.out.println(stripe);
-        System.out.println();
-        for (char[] stripe: ai.colsOfBoard) System.out.println(stripe);
-        System.out.println();
-        for (char[] stripe: ai.diagOfBoard) System.out.println(stripe);
-    }
 }

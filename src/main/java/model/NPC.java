@@ -17,7 +17,9 @@ public class NPC extends Player {
     }
 
     public void setLevel(int i) {
+
         ai = factory.create(i);
+        ai.setMySign(this.getSign());
     }
 
     public void setBoard(char[][] board) {
