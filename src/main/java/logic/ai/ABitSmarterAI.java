@@ -18,6 +18,7 @@ public class ABitSmarterAI extends NotVerySmartAI {
                .max(Comparator.comparing(Map.Entry::getValue));
 
         Optional<Map.Entry<Integer, Integer>> maxPopulatedDiagOpt = diagPopulation().entrySet().stream()
+                .filter(e -> hasDiagSpace(e.getKey()))
                .max(Comparator.comparing(Map.Entry::getValue));
 
         Map.Entry<Integer, Integer> row = maxPopulatedRowOpt.get();
@@ -51,7 +52,7 @@ public class ABitSmarterAI extends NotVerySmartAI {
                     if (rowInd>=0) colInd = rowInd;
                     else {
                         colInd = findSlotInIncreasingDiag();
-                        rowInd = boardSize-colInd;
+                        rowInd = boardSize-colInd-1;
                     }
                 break;
             default:
@@ -71,6 +72,14 @@ public class ABitSmarterAI extends NotVerySmartAI {
     private boolean hasColSpace(int colInd) {
         for (int i=0; i<boardSize; i++) {
             if (board[i][colInd] == '\u0000') return true;
+        }
+        return false;
+    }
+
+    private boolean hasDiagSpace(int ind) {
+        for (int i=0; i<boardSize; i++) {
+            if (ind == 0 && board[i][i] == '\u0000') return true;
+            if (board[boardSize-i-1][i] == '\u0000') return true;
         }
         return false;
     }
