@@ -1,5 +1,7 @@
 package view;
 
+import jdk.internal.util.xml.impl.Input;
+
 import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
@@ -34,10 +36,15 @@ public class GameView {
 
         int size;
         System.out.println("what size board should be?");
-        size = Integer.valueOf(in.nextLine());
-        if (size < 3) throw new IllegalArgumentException("size must be greater or equal 3");
+        try {
+            size = Integer.valueOf(in.nextLine());
+            if (size < 3) throw new IllegalArgumentException("size must be greater or equal 3");
 
-        return size;
+            return size;
+
+        } catch (InputMismatchException e) {
+            throw new InputMismatchException("enter integer greater or equal to 3");
+        }
     }
 
     public String getName() throws IllegalArgumentException {

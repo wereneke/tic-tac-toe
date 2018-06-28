@@ -10,8 +10,7 @@ public class NotVerySmartAI extends AI {
             col = random.nextInt(boardSize);
         } while (!areCoordinatesAllowed(row, col));
 
-        int[] coordinates = {row, col};
-        return coordinates;
+        return new int[] {row, col};
     }
 
     private boolean areCoordinatesAllowed(int row, int col) {

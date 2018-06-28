@@ -1,6 +1,5 @@
 package logic;
 
-import logic.ai.ABitSmarterAI;
 import model.Board;
 import model.NPC;
 import model.Player;
@@ -13,7 +12,7 @@ public class Game {
 
     private Player[] players;
 
-    private Board board;
+    private volatile Board board;
     private WinChecker winChecker;
     private GameView view;
 
@@ -29,16 +28,14 @@ public class Game {
 
         if (players[1] instanceof NPC) {
             ((NPC)players[1]).setBoard(board.getBoard());
-            ((NPC)players[1]).getAi().setFieldStripesOfBoard();
             ((NPC)players[1]).getAi().setEnemySign(players[0].getSign());
         }
-
     }
 
     private void turn(Player player) {
 
-        Integer row=null, col=null;
-        boolean turned = false;
+        Integer row, col;
+        boolean turned;
 
         System.out.println(String.format("%s's turn", player.getName()));
 
