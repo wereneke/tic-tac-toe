@@ -10,9 +10,11 @@ public class ABitSmarterAI extends NotVerySmartAI {
         int rowInd, colInd;
 
         Optional<Map.Entry<Integer, Integer>> maxPopulatedRowOpt = rowPopulation().entrySet().stream()
+                .filter(e -> hasRowSpace(e.getKey()))
                .max(Comparator.comparing(Map.Entry::getValue));
 
         Optional<Map.Entry<Integer, Integer>> maxPopulatedColOpt = colPopulation().entrySet().stream()
+                .filter(e -> hasColSpace(e.getKey()))
                .max(Comparator.comparing(Map.Entry::getValue));
 
         Optional<Map.Entry<Integer, Integer>> maxPopulatedDiagOpt = diagPopulation().entrySet().stream()
@@ -53,6 +55,20 @@ public class ABitSmarterAI extends NotVerySmartAI {
                 colInd = findSlotInRow(rowInd);
         }
         return new int[] {rowInd, colInd};
+    }
+
+    private boolean hasRowSpace(int rowInd) {
+        for (int i=0; i<boardSize; i++) {
+            if (board[rowInd][i] == '\u0000') return true;
+        }
+        return false;
+    }
+
+    private boolean hasColSpace(int colInd) {
+        for (int i=0; i<boardSize; i++) {
+            if (board[i][colInd] == '\u0000') return true;
+        }
+        return false;
     }
 
     private int findSlotInRow(int rowInd) {
@@ -117,12 +133,9 @@ public class ABitSmarterAI extends NotVerySmartAI {
 
     private int enemySignsInStripe(char[] stripe) {
         int amount = 0;
-        int capacity = boardSize;
         for (char sign: stripe) {
-            if (sign!='\u0000') capacity--;
             if (sign==enemySign) amount++;
         }
-        if (capacity==0) return -1;
         return amount;
     }
 }
