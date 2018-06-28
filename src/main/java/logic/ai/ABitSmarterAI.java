@@ -47,8 +47,12 @@ public class ABitSmarterAI extends NotVerySmartAI {
             case 1: colInd = maxData[0];
                     rowInd = findSlotInCol(colInd);
                 break;
-            case 2: rowInd = random.nextInt(boardSize);
-                    colInd = rowInd;
+            case 2: rowInd = findSlotInDecreasingDiag();
+                    if (rowInd>=0) colInd = rowInd;
+                    else {
+                        colInd = findSlotInIncreasingDiag();
+                        rowInd = boardSize-colInd;
+                    }
                 break;
             default:
                 rowInd = maxData[0];
@@ -84,6 +88,24 @@ public class ABitSmarterAI extends NotVerySmartAI {
         for (int i=0; i<boardSize; i++) {
             if (board[i][colInd] == '\u0000') return i;
         }
+        return -1;
+    }
+
+    private int findSlotInDecreasingDiag() {
+
+        for (int i=0; i<boardSize; i++) {
+            if (board[i][i] == '\u0000') return i;
+        }
+
+        return -1;
+    }
+
+    private int findSlotInIncreasingDiag() {
+
+        for (int i=0; i<boardSize; i++) {
+            if (board[boardSize-i][i] == '\u0000') return i;
+        }
+
         return -1;
     }
 
